@@ -48,7 +48,7 @@ jobs:
        
 
       - name: Run Migrations
-        run: npm install && npm run migrate:down npm run migrate:up
+        run: npm run migrate:up
         env:
           # to use pooled connection
           DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url_with_pooler }}"
@@ -75,15 +75,15 @@ jobs:
 #          compare_branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
 #          api_key: ${{ secrets.NEON_API_KEY }}
 
-  delete_neon_branch:
-    name: Delete Neon Branch
-    needs: setup
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Delete Neon Branch
-        uses: neondatabase/delete-branch-action@v3
-        with:
-          project_id: ${{ vars.NEON_PROJECT_ID }}
-          branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
-          api_key: ${{ secrets.NEON_API_KEY }}
+  # delete_neon_branch:
+  #   name: Delete Neon Branch
+  #   needs: setup
+  #   if: github.event_name == 'pull_request' && github.event.action == 'closed'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Delete Neon Branch
+  #       uses: neondatabase/delete-branch-action@v3
+  #       with:
+  #         project_id: ${{ vars.NEON_PROJECT_ID }}
+  #         branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
+  #         api_key: ${{ secrets.NEON_API_KEY }}
